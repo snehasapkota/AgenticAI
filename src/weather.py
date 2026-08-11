@@ -1,11 +1,11 @@
 import os
 import requests
-
+from dotenv import load_dotenv
 API_KEY = os.getenv("WEATHER_API_KEY", "")
 
 GEOCODE_URL = "https://geocoding-api.open-meteo.com/v1/search"
 FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
-
+load_dotenv()  # Load environment variables from .env file
 
 def get_coordinates(city):
     """Turn city name into latitude, longitude, resolved name.
@@ -25,7 +25,7 @@ def get_coordinates(city):
     top = results[0]
     return top["latitude"], top["longitude"], top["name"]
 
-get_coordinates("kathmandu")
+# get_coordinates("kathmandu")
 
 
 
@@ -53,4 +53,19 @@ def get_weather(city):
         "temperature": current["temperature"],
         "windspeed": current["windspeed"],
     }
-print(get_weather("kathmandu"))
+# print(get_weather("kathmandu"))
+
+def get_weather1(city):
+    url = os.getenv("WEATHER_API_URL", "https://api.openweathermap.org/data/2.5/weather")
+    city = city.strip()
+    city = city.lower().capitalize()
+    params = {
+        "q": city,
+        "appid": os.getenv("WEATHER_API_KEY"),
+        "units": "metric"
+    }
+    response = requests.get(url, params=params, timeout=10)
+    data = response.json()
+    
+
+get_weather1("kathmandu")
